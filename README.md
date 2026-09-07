@@ -1,9 +1,8 @@
-# Career Path Navigator
+## 🚀 Live Demo
 
-A Data Science project by a third-year B.Voc AI & Data Science student. It predicts a likely career category from a person's skills, interests, education, and years of experience, and shows a full, honest machine learning workflow behind that prediction.
+🔗 **[Try AI Career Navigator](https://ai-career-navigator-7ne1.onrender.com)**
 
-> For a deeper dive into *why* each technique was chosen, see [METHODOLOGY.md](METHODOLOGY.md). This README stays intentionally simple — the goal is to be able to explain every line of it in an interview.
-
+> Note: The free Render instance may take some time to wake up after inactivity.
 ---
 
 ## 1. Project Overview
