@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Career Roadmap | AI Career Navigator{% endblock %}
+{% block page_title %}Career Roadmap{% endblock %}
+
+{% block content %}
+<div class="page">
+  <header class="page__header">
+    <div>
+      <h1>Your Career Roadmap</h1>
+      <p class="muted">Track progress with goal-oriented milestones. Use this timeline to stay on track as you grow.</p>
+    </div>
+    <nav class="breadcrumbs">
+      <a href="{{ url_for('dashboard') }}" class="breadcrumbs__link">Dashboard</a>
+      <span class="breadcrumbs__separator">/</span>
+      <span class="breadcrumbs__current">Roadmap</span>
+    </nav>
+  </header>
+
+  <section class="grid grid--2 gap-lg">
+    <form class="card form" method="POST" action="{{ url_for('timeline') }}">
+      <div class="form__section">
+        <h2 class="form__title">Pick a target career</h2>
+        <div class="form__row">
+          <label class="form__label" for="career">Career goal</label>
+          <select class="form__select" id="career" name="career" required>
+            <option value="" disabled {% if not form.career %}selected{% endif %}>Select a career</option>
+            {% for career in careers %}
+            <option value="{{ career }}" {% if form.career == career %}selected{% endif %}>{{ career }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form__actions">
+          <button class="btn btn-primary" type="submit">Generate roadmap</button>
+          <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Back to dashboard</a>
+        </div>
+      </div>
+    </form>
+
+    <div class="roadmap">
+      <div class="roadmap__header">
+        <h2>Suggested milestones</h2>
+        <p class="muted">These steps are tailored based on your latest prediction results.</p>
+      </div>
+
+    <div class="roadmap__timeline">
+      {% if roadmap %}
+      {% for item in roadmap %}
+      <div class="timeline-step">
+        <div class="timeline-step__dot"></div>
+        <div class="timeline-step__content">
+          <h3 class="timeline-step__title">{{ item.title }}</h3>
+          <p class="muted">{{ item.description }}</p>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <p class="muted">Run a prediction or select a career above to see a tailored roadmap.</p>
+      {% endif %}
+    </div>
+
+    <div class="card card--subtle">
+      <div class="card__header">
+        <h2>Make it your own</h2>
+        <span class="badge badge-soft">Tip</span>
+      </div>
+      <div class="card__content">
+        <p class="muted">Review your progress regularly and update your plan based on new goals. Consistency is more powerful than speed.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="{{ url_for('predict') }}">Re-run prediction</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

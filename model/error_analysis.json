@@ -1,0 +1,315 @@
+{
+  "test_set_size": 364,
+  "total_errors": 14,
+  "error_rate": 0.038461538461538464,
+  "misclassified_examples": [
+    {
+      "skills": "git, html, problem solving, next.js, css animations",
+      "interests": "software craftsmanship, coding",
+      "education": "master's degree",
+      "experience": 1,
+      "true_career": "Software Engineer",
+      "predicted_career": "Front-End Developer",
+      "confidence_in_predicted": 0.535,
+      "confidence_in_true_career": 0.37
+    },
+    {
+      "skills": "python, teamwork, statistics",
+      "interests": "data analysis",
+      "education": "bachelor's degree",
+      "experience": 1,
+      "true_career": "Machine Learning Engineer",
+      "predicted_career": "Data Analyst",
+      "confidence_in_predicted": 0.72,
+      "confidence_in_true_career": 0.245
+    },
+    {
+      "skills": "problem solving, teamwork, api design, debugging, git",
+      "interests": "cloud, innovation",
+      "education": "master's degree",
+      "experience": 2,
+      "true_career": "Back-End Developer",
+      "predicted_career": "DevOps Engineer",
+      "confidence_in_predicted": 0.44,
+      "confidence_in_true_career": 0.235
+    },
+    {
+      "skills": "python, data cleaning",
+      "interests": "innovation, pattern recognition",
+      "education": "master's degree",
+      "experience": 6,
+      "true_career": "Machine Learning Engineer",
+      "predicted_career": "Data Analyst",
+      "confidence_in_predicted": 0.57,
+      "confidence_in_true_career": 0.395
+    },
+    {
+      "skills": "communication, market analysis, stakeholder management, product analytics, roadmap",
+      "interests": "strategy, technology, stakeholder collaboration, automation",
+      "education": "master's degree",
+      "experience": 2,
+      "true_career": "Product Manager",
+      "predicted_career": "Business Analyst",
+      "confidence_in_predicted": 0.645,
+      "confidence_in_true_career": 0.31
+    },
+    {
+      "skills": "css, figma, design systems, prototyping",
+      "interests": "user research, design, teamwork, accessibility, ui development",
+      "education": "bachelor's degree",
+      "experience": 6,
+      "true_career": "UX Designer",
+      "predicted_career": "Front-End Developer",
+      "confidence_in_predicted": 0.525,
+      "confidence_in_true_career": 0.43
+    },
+    {
+      "skills": "pandas, data cleaning, machine learning, problem solving, dashboards",
+      "interests": "statistics, dashboards, cloud computing",
+      "education": "bachelor's degree",
+      "experience": 3,
+      "true_career": "Data Analyst",
+      "predicted_career": "Machine Learning Engineer",
+      "confidence_in_predicted": 0.48,
+      "confidence_in_true_career": 0.335
+    },
+    {
+      "skills": "linux, docker, git, code review, design patterns",
+      "interests": "automation, learning new tools, software craftsmanship",
+      "education": "master's degree",
+      "experience": 12,
+      "true_career": "DevOps Engineer",
+      "predicted_career": "Software Engineer",
+      "confidence_in_predicted": 0.445,
+      "confidence_in_true_career": 0.26
+    },
+    {
+      "skills": "reporting, teamwork, stakeholder communication, stakeholder interviews, process mapping",
+      "interests": "analytics, visualization, technology",
+      "education": "diploma",
+      "experience": 14,
+      "true_career": "Data Analyst",
+      "predicted_career": "Business Analyst",
+      "confidence_in_predicted": 0.48,
+      "confidence_in_true_career": 0.47
+    },
+    {
+      "skills": "numpy, data cleaning, power bi, machine learning, ansible, networking",
+      "interests": "statistics, risk management",
+      "education": "bachelor's degree",
+      "experience": 1,
+      "true_career": "Data Analyst",
+      "predicted_career": "Machine Learning Engineer",
+      "confidence_in_predicted": 0.54,
+      "confidence_in_true_career": 0.425
+    },
+    {
+      "skills": "personas, user research, card sorting, prototyping, css, model deployment",
+      "interests": "user experience, problem solving, visual storytelling, interactive web experiences",
+      "education": "bachelor's degree",
+      "experience": 1,
+      "true_career": "UX Designer",
+      "predicted_career": "Front-End Developer",
+      "confidence_in_predicted": 0.545,
+      "confidence_in_true_career": 0.43
+    },
+    {
+      "skills": "critical thinking, databases, cloud, git, monitoring, site reliability",
+      "interests": "cloud, infrastructure, innovation",
+      "education": "diploma",
+      "experience": 13,
+      "true_career": "Back-End Developer",
+      "predicted_career": "DevOps Engineer",
+      "confidence_in_predicted": 0.675,
+      "confidence_in_true_career": 0.31
+    },
+    {
+      "skills": "critical thinking, linux, cloud",
+      "interests": "infrastructure",
+      "education": "bachelor's degree",
+      "experience": 3,
+      "true_career": "Back-End Developer",
+      "predicted_career": "DevOps Engineer",
+      "confidence_in_predicted": 0.58,
+      "confidence_in_true_career": 0.32
+    },
+    {
+      "skills": "presentation skills, teamwork, debugging, javascript, ansible",
+      "interests": "coding, learning new tools, web development",
+      "education": "bachelor's degree",
+      "experience": 14,
+      "true_career": "Software Engineer",
+      "predicted_career": "Front-End Developer",
+      "confidence_in_predicted": 0.615,
+      "confidence_in_true_career": 0.35
+    }
+  ],
+  "confusion_pairs": {
+    "Back-End Developer -> DevOps Engineer": 3,
+    "Software Engineer -> Front-End Developer": 2,
+    "Machine Learning Engineer -> Data Analyst": 2,
+    "UX Designer -> Front-End Developer": 2,
+    "Data Analyst -> Machine Learning Engineer": 2,
+    "Product Manager -> Business Analyst": 1,
+    "DevOps Engineer -> Software Engineer": 1,
+    "Data Analyst -> Business Analyst": 1
+  },
+  "lowest_confidence_predictions": [
+    {
+      "skills": "google sheets, communication, teamwork, reporting, tableau, xgboost",
+      "interests": "market research, forecasting, reporting, customer needs",
+      "education": "master's degree",
+      "experience": 5,
+      "true_career": "Data Analyst",
+      "predicted_career": "Data Analyst",
+      "correct": true,
+      "confidence": 0.35
+    },
+    {
+      "skills": "gap analysis, critical thinking, roadmap, data visualization, problem solving, market analysis, interaction design, design critique",
+      "interests": "innovation, financial analysis, analytics, requirements analysis, cloud computing",
+      "education": "diploma",
+      "experience": 5,
+      "true_career": "Business Analyst",
+      "predicted_career": "Business Analyst",
+      "correct": true,
+      "confidence": 0.365
+    },
+    {
+      "skills": "python, git, testing, computer vision",
+      "interests": "coding, problem solving",
+      "education": "master's degree",
+      "experience": 0,
+      "true_career": "Software Engineer",
+      "predicted_career": "Software Engineer",
+      "correct": true,
+      "confidence": 0.385
+    },
+    {
+      "skills": "user research, customer discovery, personas",
+      "interests": "strategy, infrastructure",
+      "education": "phd",
+      "experience": 4,
+      "true_career": "Product Manager",
+      "predicted_career": "Product Manager",
+      "correct": true,
+      "confidence": 0.4
+    },
+    {
+      "skills": "debugging, ci/cd, ansible, prometheus",
+      "interests": "automation",
+      "education": "diploma",
+      "experience": 2,
+      "true_career": "Software Engineer",
+      "predicted_career": "Software Engineer",
+      "correct": true,
+      "confidence": 0.4
+    },
+    {
+      "skills": "communication, market analysis, user research, customer discovery, personas, visual design",
+      "interests": "user research, technology, ui development",
+      "education": "bachelor's degree",
+      "experience": 4,
+      "true_career": "Product Manager",
+      "predicted_career": "Product Manager",
+      "correct": true,
+      "confidence": 0.405
+    },
+    {
+      "skills": "git, data structures, documentation, pandas, interaction design, journey mapping",
+      "interests": "programming",
+      "education": "bachelor's degree",
+      "experience": 4,
+      "true_career": "Machine Learning Engineer",
+      "predicted_career": "Machine Learning Engineer",
+      "correct": true,
+      "confidence": 0.405
+    },
+    {
+      "skills": "data structures, ci/cd, mongodb",
+      "interests": "teamwork, infrastructure, data storytelling",
+      "education": "12th pass",
+      "experience": 5,
+      "true_career": "Back-End Developer",
+      "predicted_career": "Back-End Developer",
+      "correct": true,
+      "confidence": 0.415
+    },
+    {
+      "skills": "docker, teamwork, critical thinking, cloud, linux, interaction design, card sorting",
+      "interests": "systems, site reliability, computer vision",
+      "education": "bachelor's degree",
+      "experience": 1,
+      "true_career": "DevOps Engineer",
+      "predicted_career": "DevOps Engineer",
+      "correct": true,
+      "confidence": 0.415
+    },
+    {
+      "skills": "linux, presentation skills, data structures, databases, git, testing, prioritization",
+      "interests": "teamwork, infrastructure, automation",
+      "education": "master's degree",
+      "experience": 1,
+      "true_career": "Back-End Developer",
+      "predicted_career": "Back-End Developer",
+      "correct": true,
+      "confidence": 0.42
+    },
+    {
+      "skills": "communication, data structures, api design, linux",
+      "interests": "technology, cloud, api design, site reliability",
+      "education": "bachelor's degree",
+      "experience": 3,
+      "true_career": "Back-End Developer",
+      "predicted_career": "Back-End Developer",
+      "correct": true,
+      "confidence": 0.42
+    },
+    {
+      "skills": "python, machine learning, design patterns, object-oriented design",
+      "interests": "visualization",
+      "education": "bachelor's degree",
+      "experience": 2,
+      "true_career": "Data Analyst",
+      "predicted_career": "Data Analyst",
+      "correct": true,
+      "confidence": 0.425
+    },
+    {
+      "skills": "design systems, css, competitive analysis, pricing strategy",
+      "interests": "customer feedback, innovation, risk management",
+      "education": "bachelor's degree",
+      "experience": 0,
+      "true_career": "UX Designer",
+      "predicted_career": "UX Designer",
+      "correct": true,
+      "confidence": 0.435
+    },
+    {
+      "skills": "personas, user research, agile, communication, ansible, logging systems",
+      "interests": "usability, user experience, infrastructure",
+      "education": "bachelor's degree",
+      "experience": 9,
+      "true_career": "UX Designer",
+      "predicted_career": "UX Designer",
+      "correct": true,
+      "confidence": 0.44
+    },
+    {
+      "skills": "problem solving, teamwork, api design, debugging, git",
+      "interests": "cloud, innovation",
+      "education": "master's degree",
+      "experience": 2,
+      "true_career": "Back-End Developer",
+      "predicted_career": "DevOps Engineer",
+      "correct": false,
+      "confidence": 0.44
+    }
+  ],
+  "minority_class_check": {
+    "minority_class": "UX Designer",
+    "minority_class_test_count": 24,
+    "minority_class_errors": 2,
+    "minority_class_error_rate": 0.08333333333333333
+  }
+}

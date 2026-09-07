@@ -1,0 +1,373 @@
+{% extends "base.html" %}
+{% block title %}Career Prediction | AI Career Navigator{% endblock %}
+{% block page_title %}Career Prediction{% endblock %}
+
+{% block content %}
+<div class="page">
+  <header class="page__header">
+    <div>
+      <h1>Career Prediction</h1>
+      <p class="muted">Answer a few questions and get an ML-backed career fit score, dataset-based salary estimate, and tailored suggestions.</p>
+    </div>
+    <nav class="breadcrumbs">
+      <a href="{{ url_for('dashboard') }}" class="breadcrumbs__link">Dashboard</a>
+      <span class="breadcrumbs__separator">/</span>
+      <span class="breadcrumbs__current">Prediction</span>
+    </nav>
+  </header>
+
+  <section class="grid grid--2 gap-lg">
+    <form class="card form" method="POST" action="{{ url_for('predict') }}">
+      <div class="form__section">
+        <h2 class="form__title">Your career profile</h2>
+        
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+          <strong>⚠️ Error:</strong> {{ error }}
+        </div>
+        {% endif %}
+        
+        <div class="form__row">
+          <label class="form__label" for="skills">Key skills (comma separated) *</label>
+          <input class="form__input" type="text" id="skills" name="skills" placeholder="e.g. Python, SQL, data viz" value="{{ form.skills }}" required>
+          <small class="text-muted">e.g., Python, SQL, Excel, Tableau</small>
+        </div>
+        <div class="form__row">
+          <label class="form__label" for="interests">Interests or focus areas *</label>
+          <input class="form__input" type="text" id="interests" name="interests" placeholder="e.g. machine learning, BI" value="{{ form.interests }}" required>
+          <small class="text-muted">e.g., data science, machine learning, analytics</small>
+        </div>
+        <div class="form__row">
+          <label class="form__label" for="education">Highest education *</label>
+          <select class="form__select" id="education" name="education" required>
+            <option value="" disabled {% if not form.education %}selected{% endif %}>Select education level</option>
+            <option value="12th Pass" {% if form.education == '12th Pass' %}selected{% endif %}>12th Pass</option>
+            <option value="Diploma" {% if form.education == 'Diploma' %}selected{% endif %}>Diploma</option>
+            <option value="Bachelor's Degree" {% if form.education == "Bachelor's Degree" %}selected{% endif %}>Bachelor's Degree</option>
+            <option value="Master's Degree" {% if form.education == "Master's Degree" %}selected{% endif %}>Master's Degree</option>
+            <option value="PhD" {% if form.education == 'PhD' %}selected{% endif %}>PhD</option>
+          </select>
+        </div>
+        <div class="form__row">
+          <label class="form__label" for="experience">Years of experience *</label>
+          <select class="form__select" id="experience" name="experience" required>
+            <option value="" disabled {% if not form.experience %}selected{% endif %}>Select years of experience</option>
+            {% for yr in range(0, 11) %}
+            <option value="{{ yr }}" {% if form.experience == yr|string %}selected{% endif %}>{{ yr }} {{ "year" if yr == 1 else "years" }}</option>
+            {% endfor %}
+          </select>
+          <p class="muted" style="font-size: 0.85rem;">Entered directly as years, matching how the model was trained (no Entry/Mid/Senior bucketing).</p>
+        </div>
+        <div class="form__row">
+          <label class="form__label">What-if skills (optional)</label>
+          {% set selected_skills = form.what_if_skills.split(',') if form.what_if_skills else [] %}
+          {% set selected_skills = selected_skills | map('trim') | list %}
+          <div class="checkbox-grid">
+            {% for skill in ['Python', 'Machine Learning', 'Cloud Computing', 'Data Visualization'] %}
+            <label class="checkbox">
+              <input type="checkbox" name="what_if_skills" value="{{ skill }}" {% if skill in selected_skills %}checked{% endif %}>
+              {{ skill }}
+            </label>
+            {% endfor %}
+          </div>
+          <input class="form__input" type="text" id="what_if_skills_text" name="what_if_skills" placeholder="Additional skills (comma separated)" value="{{ form.what_if_skills }}">
+          <p class="muted">Try selecting skills to see how your predicted career and salary change based on the ML model's predictions.</p>
+        </div>
+        <div class="form__actions">
+          <button class="btn btn-primary" type="submit">Get prediction</button>
+          <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Back to dashboard</a>
+        </div>
+      </div>
+    </form>
+
+    <aside class="card card--subtle">
+      <div class="card__header">
+        <h2>Prediction Results</h2>
+        <span class="badge badge-soft">{{ "Career ML Prediction" if prediction else "Waiting for input" }}</span>
+      </div>
+      <div class="card__content">
+        {% if prediction is not none %}
+        
+        <!-- Main Prediction -->
+        <div class="grid grid--2 gap-md">
+          <div class="stat">
+            <span class="stat__value">{{ (prediction.score * 100) | round(1) }}%</span>
+            <span class="stat__label">Model Confidence</span>
+            <small class="text-muted">Predicted match based on patterns in the training data</small>
+          </div>
+          <div class="stat">
+            <span class="stat__value">{{ prediction.main }}</span>
+            <span class="stat__label">Top Predicted Role</span>
+          </div>
+          <div class="stat">
+            <span class="stat__value">{{ prediction.salary_min | currency }} - {{ prediction.salary_max | currency }}</span>
+            <span class="stat__label">Dataset Salary Range</span>
+            <small class="text-muted">Based on training data</small>
+          </div>
+          {% if prediction.alternatives %}
+          <div class="stat stat--alt">
+            <span class="stat__value">{{ prediction.alternatives[0].career }}</span>
+            <span class="stat__label">Alternative Role ({{ (prediction.alternatives[0].score * 100) | round(1) }}%)</span>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Skill Matching Explanation -->
+        <div class="card" style="margin-top: 1.25rem;">
+          <div class="card__header">
+            <h3>🎯 Skill Matching Analysis</h3>
+          </div>
+          <div class="card__content">
+            <p class="muted" style="margin-bottom: 1rem;">
+              <strong>Note:</strong> This analysis compares your skills against career data from our training dataset. 
+              It shows which of your skills are valuable for <strong>{{ prediction.main }}</strong>.
+            </p>
+            
+            {% if prediction.matching_skills %}
+            <div style="margin-bottom: 1rem;">
+              <h5 style="margin-bottom: 0.5rem; color: #28a745;">✓ Your Matching Skills</h5>
+              <p class="muted">These skills align with <strong>{{ prediction.main }}</strong>:</p>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                {% for skill in prediction.matching_skills %}
+                <span class="badge bg-success">{{ skill }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+            
+            {% if prediction.missing_skills %}
+            <div>
+              <h5 style="margin-bottom: 0.5rem; color: #ffc107;">⚡ Recommended Skills to Add</h5>
+              <p class="muted">These common skills for <strong>{{ prediction.main }}</strong> are not in your profile:</p>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                {% for skill in prediction.missing_skills %}
+                <span class="badge bg-warning" style="color: #000;">{{ skill }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+
+            {% if prediction.matching_interests %}
+            <div style="margin-top: 1rem;">
+              <h5 style="margin-bottom: 0.5rem; color: #0d6efd;">💡 Your Matching Interests</h5>
+              <p class="muted">These stated interests are also common among <strong>{{ prediction.main }}</strong> profiles in the dataset:</p>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                {% for interest in prediction.matching_interests %}
+                <span class="badge bg-info" style="color: #000;">{{ interest }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Alternative Careers -->
+        {% if prediction.alternatives %}
+        <div class="card" style="margin-top: 1.25rem;">
+          <div class="card__header">
+            <h3>Other Predicted Careers</h3>
+          </div>
+          <div class="card__content">
+            <p class="muted" style="margin-bottom: 1rem;">The ML model predicts these alternative careers based on your profile:</p>
+            <div style="display: grid; gap: 0.75rem;">
+              {% for alt in prediction.alternatives %}
+              <div style="padding: 0.75rem; background-color: #f9f9f9; border-radius: 4px;">
+                <strong>{{ alt.career }}</strong>
+                <div style="color: #666; font-size: 0.9em;">
+                  ML Score: <strong>{{ (alt.score * 100) | round(1) }}%</strong>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Career Roadmap -->
+        {% if prediction.roadmap %}
+        <div class="card" style="margin-top: 1.25rem;">
+          <div class="card__header">
+            <h3>📈 Career Roadmap (5-Year Plan)</h3>
+          </div>
+          <div class="card__content">
+            <p class="muted" style="margin-bottom: 1rem;">
+              <strong>Note:</strong> This is a manually defined career progression, not ML-generated.
+            </p>
+            <ul class="roadmap-list">
+              {% for step in prediction.roadmap %}
+              <li>
+                <strong>{{ step.title }}</strong>
+                <br>
+                <small class="muted">{{ step.description }}</small>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- What-If Analysis -->
+        {% if what_if %}
+        <div class="card" style="margin-top: 1.25rem;">
+          <div class="card__header">
+            <h3>🔄 What-If Analysis: Modified Profile</h3>
+          </div>
+          <div class="card__content">
+            <p class="muted" style="margin-bottom: 1rem;">
+              <strong>Skills Added:</strong> {{ what_if.skills_added | join(', ') }}
+            </p>
+
+            <div class="grid grid--2 gap-md">
+              <div class="card card--subtle">
+                <div class="card__header">
+                  <h4>Original Profile</h4>
+                </div>
+                <div class="card__content">
+                  <p style="margin: 0.5rem 0;"><strong>{{ what_if.career_before }}</strong></p>
+                  <p style="margin: 0.5rem 0; color: #666;">ML Score: <strong>{{ (what_if.score_before * 100) | round(1) }}%</strong></p>
+                  <p style="margin: 0.5rem 0; color: #666;">Estimated Salary: <strong>{{ what_if.salary_before_min | currency }} - {{ what_if.salary_before_max | currency }}</strong></p>
+                </div>
+              </div>
+              <div class="card card--subtle">
+                <div class="card__header">
+                  <h4>After Adding Skills</h4>
+                </div>
+                <div class="card__content">
+                  <p style="margin: 0.5rem 0;"><strong>{{ what_if.career_after }}</strong></p>
+                  <p style="margin: 0.5rem 0; color: #666;">ML Score: <strong>{{ (what_if.score_after * 100) | round(1) }}%</strong></p>
+                  <p style="margin: 0.5rem 0; color: #666;">Estimated Salary: <strong>{{ what_if.salary_after_min | currency }} - {{ what_if.salary_after_max | currency }}</strong></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card card--subtle" style="margin-top: 1rem;">
+              <div class="card__header">
+                <h4>📊 Impact Summary</h4>
+              </div>
+              <div class="card__content">
+                {% if what_if.career_changed %}
+                <p style="margin: 0.5rem 0;">
+                  <strong style="color: #28a745;">Career Change Detected</strong>
+                  <br>
+                  <small>The ML model now predicts <strong>{{ what_if.career_after }}</strong> as the top career (was <strong>{{ what_if.career_before }}</strong>).</small>
+                </p>
+                {% else %}
+                <p style="margin: 0.5rem 0;">
+                  <strong>Top Prediction Unchanged</strong>
+                  <br>
+                  <small>{{ what_if.career_after }} remains the best fit, but with a {{ (what_if.score_after * 100) | round(1) }}% score (previously {{ (what_if.score_before * 100) | round(1) }}%).</small>
+                </p>
+                {% endif %}
+              </div>
+            </div>
+
+            {% if what_if.roadmap_after %}
+            <div class="card card--subtle" style="margin-top: 1rem;">
+              <div class="card__header">
+                <h4>📈 Updated Career Roadmap</h4>
+              </div>
+              <div class="card__content">
+                <ul class="roadmap-list">
+                  {% for step in what_if.roadmap_after %}
+                  <li>
+                    <strong>{{ step.title }}</strong>
+                    <br>
+                    <small class="muted">{{ step.description }}</small>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Important Notes -->
+        <div class="alert alert-info" style="margin-top: 1.25rem;">
+          <strong>📋 How This Works:</strong>
+          <ul style="margin: 0.5rem 0 0 0; padding-left: 1.5rem;">
+            <li><strong>ML Prediction:</strong> Career prediction uses the best-performing classifier chosen automatically during training (Logistic Regression, Random Forest, or Linear SVM — see the <a href="{{ url_for('evaluate') }}">Model Evaluation</a> page for which one is currently deployed)</li>
+            <li><strong>Dataset Lookup:</strong> Salary and skill information come from our training dataset (not ML-generated)</li>
+            <li><strong>Rule-Based:</strong> Career roadmaps are manually defined progression plans</li>
+            <li><strong>Model Confidence:</strong> This is the model's genuine predicted probability based on patterns learned from the training data — not artificially boosted, and not a guarantee of real-world career success</li>
+          </ul>
+        </div>
+
+        <div class="cta">
+          <p class="muted">Want to explore a specific career timeline?</p>
+          <a class="btn btn-primary" href="{{ url_for('timeline') }}">View career roadmap</a>
+          <a class="btn btn-outline-primary" href="{{ url_for('evaluate') }}" style="margin-left: 0.5rem;">View model performance</a>
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 2rem 0;">
+          <p class="muted">👈 Fill out the form to see personalized results.</p>
+          <p class="muted" style="font-size: 0.9em; color: #999;">Your inputs remain private and are never stored or shared.</p>
+        </div>
+        {% endif %}
+      </div>
+    </aside>
+  </section>
+</div>
+
+<style>
+  .alert {
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  .alert-danger {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+  }
+  .alert-info {
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+  }
+  .badge {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+  }
+  .bg-success {
+    background-color: #28a745;
+    color: white;
+  }
+  .bg-warning {
+    background-color: #ffc107;
+  }
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  .checkbox input {
+    margin-right: 0.5rem;
+  }
+  .roadmap-list {
+    list-style: none;
+    padding: 0;
+  }
+  .roadmap-list li {
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    background-color: #f9f9f9;
+    border-left: 4px solid #007bff;
+    border-radius: 2px;
+  }
+</style>
+{% endblock %}

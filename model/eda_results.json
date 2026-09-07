@@ -1,0 +1,162 @@
+{
+  "data_cleaning": {
+    "missing_values_total": 0,
+    "duplicate_rows": 0,
+    "empty_skills_rows": 0,
+    "empty_interests_rows": 0,
+    "invalid_salary_order_rows": 0,
+    "non_positive_salary_rows": 0,
+    "invalid_experience_rows": 0,
+    "is_clean": true
+  },
+  "dataset": {
+    "total_records": 1820,
+    "total_columns": 7,
+    "missing_values": {
+      "skills": 0,
+      "interests": 0,
+      "education": 0,
+      "experience": 0,
+      "career_category": 0,
+      "salary_min": 0,
+      "salary_max": 0
+    },
+    "duplicate_rows": 0
+  },
+  "careers": {
+    "unique_count": 9,
+    "distribution": {
+      "Software Engineer": 300,
+      "Data Analyst": 260,
+      "Front-End Developer": 240,
+      "Back-End Developer": 220,
+      "Machine Learning Engineer": 200,
+      "Business Analyst": 180,
+      "DevOps Engineer": 160,
+      "Product Manager": 140,
+      "UX Designer": 120
+    },
+    "class_balance_ratio": 0.4
+  },
+  "education": {
+    "unique_values": [
+      "bachelor's degree",
+      "diploma",
+      "12th pass",
+      "master's degree",
+      "phd"
+    ],
+    "distribution": {
+      "bachelor's degree": 921,
+      "master's degree": 433,
+      "diploma": 275,
+      "phd": 108,
+      "12th pass": 83
+    }
+  },
+  "experience": {
+    "distribution": {
+      "0": 182,
+      "1": 359,
+      "2": 190,
+      "3": 300,
+      "4": 130,
+      "5": 112,
+      "6": 154,
+      "7": 61,
+      "8": 44,
+      "9": 49,
+      "10": 98,
+      "11": 22,
+      "12": 30,
+      "13": 29,
+      "14": 22,
+      "15": 38
+    }
+  },
+  "salary_inr": {
+    "salary_min": {
+      "min": 369000.0,
+      "max": 1667000.0,
+      "mean": 764535.1648351648,
+      "median": 714000.0
+    },
+    "salary_max": {
+      "min": 755000.0,
+      "max": 3647000.0,
+      "mean": 1683376.923076923,
+      "median": 1562000.0
+    },
+    "currency": "INR"
+  },
+  "skills": {
+    "unique_count": 151,
+    "top_15": {
+      "git": 519,
+      "communication": 331,
+      "debugging": 320,
+      "testing": 307,
+      "problem solving": 254,
+      "agile": 250,
+      "api design": 235,
+      "documentation": 235,
+      "critical thinking": 229,
+      "presentation skills": 219,
+      "python": 218,
+      "teamwork": 217,
+      "ci/cd": 213,
+      "linux": 213,
+      "user research": 210
+    }
+  },
+  "interests": {
+    "unique_count": 63,
+    "top_15": {
+      "infrastructure": 233,
+      "coding": 207,
+      "web development": 203,
+      "automation": 197,
+      "technology": 192,
+      "engineering": 187,
+      "learning new tools": 186,
+      "problem solving": 178,
+      "innovation": 175,
+      "analytics": 174,
+      "cloud": 172,
+      "statistics": 172,
+      "teamwork": 171,
+      "backend systems": 171,
+      "user experience": 168
+    }
+  },
+  "data_quality_notes": [
+    {
+      "status": "pass",
+      "note": "No missing values in critical columns"
+    },
+    {
+      "status": "pass",
+      "note": "0 duplicate records"
+    },
+    {
+      "status": "pass",
+      "note": "1820 valid records"
+    },
+    {
+      "status": "warn",
+      "note": "Class balance ratio (min/max class size): 0.40 (imbalanced)"
+    },
+    {
+      "status": "warn",
+      "note": "No geographical information (single implicit market assumption)"
+    },
+    {
+      "status": "warn",
+      "note": "No temporal information (no posting-date/year data)"
+    },
+    {
+      "status": "warn",
+      "note": "Dataset is synthetically generated, not sourced from real job postings"
+    }
+  ]
+}

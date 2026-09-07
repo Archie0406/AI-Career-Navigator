@@ -1,0 +1,353 @@
+{
+  "best_model": "Random Forest",
+  "test_accuracy": 0.9615384615384616,
+  "test_precision_weighted": 0.9630034648763885,
+  "test_recall_weighted": 0.9615384615384616,
+  "test_f1_weighted": 0.9616078182816622,
+  "test_precision_macro": 0.9640050234661138,
+  "test_recall_macro": 0.9600549913049912,
+  "test_f1_macro": 0.961295438034941,
+  "cv_mean": 0.9581085534058278,
+  "cv_std": 0.0033065620860267607,
+  "cv_scores": [
+    0.952054794520548,
+    0.9587628865979382,
+    0.9587628865979382,
+    0.9587628865979382,
+    0.9621993127147767
+  ],
+  "model_comparison": [
+    {
+      "Model": "Logistic Regression",
+      "Accuracy": 0.9615384615384616,
+      "Precision (weighted)": 0.9622806826679289,
+      "Recall (weighted)": 0.9615384615384616,
+      "F1-Score (weighted)": 0.9615435136240579,
+      "Precision (macro)": 0.9614430649120966,
+      "Recall (macro)": 0.9608359233359233,
+      "F1-Score (macro)": 0.9606840226346139,
+      "CV Mean": 0.9574212681824601,
+      "CV Std": 0.007050691308968367
+    },
+    {
+      "Model": "Random Forest",
+      "Accuracy": 0.9615384615384616,
+      "Precision (weighted)": 0.9630034648763885,
+      "Recall (weighted)": 0.9615384615384616,
+      "F1-Score (weighted)": 0.9616078182816622,
+      "Precision (macro)": 0.9640050234661138,
+      "Recall (macro)": 0.9600549913049912,
+      "F1-Score (macro)": 0.961295438034941,
+      "CV Mean": 0.9581085534058278,
+      "CV Std": 0.0033065620860267607
+    },
+    {
+      "Model": "Linear SVM",
+      "Accuracy": 0.9560439560439561,
+      "Precision (weighted)": 0.9574333734780992,
+      "Recall (weighted)": 0.9560439560439561,
+      "F1-Score (weighted)": 0.9560881117573429,
+      "Precision (macro)": 0.956064123803168,
+      "Recall (macro)": 0.9573847448847448,
+      "F1-Score (macro)": 0.9560209428291986,
+      "CV Mean": 0.9484936214282353,
+      "CV Std": 0.010841892797164342
+    }
+  ],
+  "dataset_size": 1820,
+  "train_size": 1456,
+  "test_size": 364,
+  "n_careers": 9,
+  "careers": [
+    "Back-End Developer",
+    "Business Analyst",
+    "Data Analyst",
+    "DevOps Engineer",
+    "Front-End Developer",
+    "Machine Learning Engineer",
+    "Product Manager",
+    "Software Engineer",
+    "UX Designer"
+  ],
+  "confusion_matrix": [
+    [
+      41,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      36,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      49,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      31,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      48,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      2,
+      0,
+      0,
+      38,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      27,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      58,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      22
+    ]
+  ],
+  "confusion_matrix_labels": [
+    "Back-End Developer",
+    "Business Analyst",
+    "Data Analyst",
+    "DevOps Engineer",
+    "Front-End Developer",
+    "Machine Learning Engineer",
+    "Product Manager",
+    "Software Engineer",
+    "UX Designer"
+  ],
+  "per_class_report": {
+    "Back-End Developer": {
+      "precision": 1.0,
+      "recall": 0.9318181818181818,
+      "f1_score": 0.9647058823529412,
+      "support": 44
+    },
+    "Business Analyst": {
+      "precision": 0.9473684210526315,
+      "recall": 1.0,
+      "f1_score": 0.972972972972973,
+      "support": 36
+    },
+    "Data Analyst": {
+      "precision": 0.9607843137254902,
+      "recall": 0.9423076923076923,
+      "f1_score": 0.9514563106796117,
+      "support": 52
+    },
+    "DevOps Engineer": {
+      "precision": 0.9117647058823529,
+      "recall": 0.96875,
+      "f1_score": 0.9393939393939394,
+      "support": 32
+    },
+    "Front-End Developer": {
+      "precision": 0.9230769230769231,
+      "recall": 1.0,
+      "f1_score": 0.96,
+      "support": 48
+    },
+    "Machine Learning Engineer": {
+      "precision": 0.95,
+      "recall": 0.95,
+      "f1_score": 0.95,
+      "support": 40
+    },
+    "Product Manager": {
+      "precision": 1.0,
+      "recall": 0.9642857142857143,
+      "f1_score": 0.9818181818181818,
+      "support": 28
+    },
+    "Software Engineer": {
+      "precision": 0.9830508474576272,
+      "recall": 0.9666666666666667,
+      "f1_score": 0.9747899159663865,
+      "support": 60
+    },
+    "UX Designer": {
+      "precision": 1.0,
+      "recall": 0.9166666666666666,
+      "f1_score": 0.9565217391304348,
+      "support": 24
+    }
+  },
+  "baseline_accuracy": 0.16483516483516483,
+  "baseline_f1_weighted": 0.04665146174580137,
+  "accuracy_lift_over_baseline": 0.7967032967032968,
+  "top_features_per_class": null,
+  "hyperparameter_tuning": {
+    "method": "GridSearchCV",
+    "model_tuned": "Logistic Regression",
+    "param_grid": {
+      "clf__C": [
+        0.1,
+        1,
+        5,
+        10,
+        20
+      ]
+    },
+    "results_per_value": [
+      {
+        "C": 0.1,
+        "mean_cv_accuracy": 0.9340676928870687,
+        "std_cv_accuracy": 0.00794017676905307
+      },
+      {
+        "C": 1,
+        "mean_cv_accuracy": 0.9574212681824601,
+        "std_cv_accuracy": 0.007050691308968367
+      },
+      {
+        "C": 5,
+        "mean_cv_accuracy": 0.9567339829590924,
+        "std_cv_accuracy": 0.005555457109212975
+      },
+      {
+        "C": 10,
+        "mean_cv_accuracy": 0.9594831238525632,
+        "std_cv_accuracy": 0.00662631357017371
+      },
+      {
+        "C": 20,
+        "mean_cv_accuracy": 0.9581061996893094,
+        "std_cv_accuracy": 0.0058983234280622875
+      }
+    ],
+    "best_C": 10,
+    "best_cv_accuracy": 0.9594831238525632,
+    "applied_to_deployed_model": false
+  },
+  "class_weight_comparison": {
+    "minority_class_name": "UX Designer",
+    "minority_class_train_count": 96,
+    "results": {
+      "Logistic Regression": {
+        "class_weight_none": {
+          "accuracy": 0.9615384615384616,
+          "precision_macro": 0.9614430649120966,
+          "recall_macro": 0.9608359233359233,
+          "f1_macro": 0.9606840226346139,
+          "f1_weighted": 0.9615435136240579,
+          "cv_mean": 0.9574212681824601,
+          "minority_class_recall": 0.9166666666666666
+        },
+        "class_weight_balanced": {
+          "accuracy": 0.9587912087912088,
+          "precision_macro": 0.9579952207849958,
+          "recall_macro": 0.9621390183890184,
+          "f1_macro": 0.9593402868003036,
+          "f1_weighted": 0.958862166916966,
+          "cv_mean": 0.9622275573129973,
+          "minority_class_recall": 0.9583333333333334
+        }
+      },
+      "Linear SVM": {
+        "class_weight_none": {
+          "accuracy": 0.9560439560439561,
+          "precision_macro": 0.956064123803168,
+          "recall_macro": 0.9573847448847448,
+          "f1_macro": 0.9560209428291986,
+          "f1_weighted": 0.9560881117573429,
+          "cv_mean": 0.9484936214282353,
+          "minority_class_recall": 0.9166666666666666
+        },
+        "class_weight_balanced": {
+          "accuracy": 0.9478021978021978,
+          "precision_macro": 0.946567509191196,
+          "recall_macro": 0.9478826728826729,
+          "f1_macro": 0.9445201291454212,
+          "f1_weighted": 0.9477251601024028,
+          "cv_mean": 0.9471166972649815,
+          "minority_class_recall": 0.8333333333333334
+        }
+      },
+      "Random Forest": {
+        "class_weight_none": {
+          "accuracy": 0.9615384615384616,
+          "precision_macro": 0.9640050234661138,
+          "recall_macro": 0.9600549913049912,
+          "f1_macro": 0.961295438034941,
+          "f1_weighted": 0.9616078182816622,
+          "cv_mean": 0.9581085534058278,
+          "minority_class_recall": 0.9166666666666666
+        },
+        "class_weight_balanced": {
+          "accuracy": 0.9532967032967034,
+          "precision_macro": 0.9537054658251414,
+          "recall_macro": 0.9501223313723314,
+          "f1_macro": 0.9508419064446153,
+          "f1_weighted": 0.9532171703533128,
+          "cv_mean": 0.9567339829590924,
+          "minority_class_recall": 0.875
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Home — Career Path Navigator{% endblock %}
+{% block page_title %}Welcome{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="content hero__inner">
+    <div>
+      <h1 class="hero__title">Build your career path with AI guidance</h1>
+      <p class="hero__subtitle">Enter your skills and background to get instant role recommendations, salary insights, and a roadmap that adapts as you grow.</p>
+
+      <div class="hero__actions">
+        <a class="btn btn-primary" href="{{ url_for('dashboard') }}">Get started</a>
+        <a class="btn btn-ghost" href="{{ url_for('dashboard') }}">Explore app</a>
+      </div>
+    </div>
+
+    <div class="hero__media">
+      <div>
+        <h3 style="margin:0 0 1rem;">What you can do</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-card__icon">🔮</div>
+            <h4>Predict roles</h4>
+            <p class="muted">Get AI-fit scores and suggested careers based on your experience.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card__icon">🧠</div>
+            <h4>Skill roadmaps</h4>
+            <p class="muted">See which skills to build next along your target path.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card__icon">📍</div>
+            <h4>5yr roadmap</h4>
+            <p class="muted">Track milestones and stay on course as you level up.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

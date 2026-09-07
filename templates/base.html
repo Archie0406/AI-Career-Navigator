@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}AI Career Navigator{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" onerror="this.onerror=null;this.href='../static/style.css'" />
+  </head>
+
+  <body>
+    <div class="app{% if not user_name %} app--unauth{% endif %}">
+      <header class="navbar">
+        <div class="navbar__brand">
+          <a href="{{ url_for('dashboard') }}" class="brand">
+            <span class="brand__logo">CP</span>
+            <span class="brand__name">Career Path Navigator</span>
+          </a>
+        </div>
+
+        <nav class="navbar__nav" aria-label="Primary">
+          <a class="nav__item{% if request.endpoint == 'dashboard' %} active{% endif %}" href="{{ url_for('dashboard') }}">Dashboard</a>
+          <a class="nav__item{% if request.endpoint == 'predict' %} active{% endif %}" href="{{ url_for('predict') }}">Career Prediction</a>
+          <a class="nav__item{% if request.endpoint == 'skills' %} active{% endif %}" href="{{ url_for('skills') }}">Skill Recommendations</a>
+          <a class="nav__item{% if request.endpoint == 'timeline' %} active{% endif %}" href="{{ url_for('timeline') }}">5-Year Roadmap</a>
+          <a class="nav__item{% if request.endpoint == 'evaluate' %} active{% endif %}" href="{{ url_for('evaluate') }}">Model Performance</a>
+        </nav>
+
+        <div class="navbar__actions">
+          <span class="navbar__user">{{ user_name }}</span>
+        </div>
+      </header>
+
+      <main class="main{% if not user_name %} main--auth{% endif %}">
+        {% if user_name %}
+        <header class="page-header">
+          <h1 class="page-title">{%- block page_title -%}{%- endblock -%}</h1>
+        </header>
+        {% endif %}
+
+        <section class="content">
+          {% block content %}{% endblock %}
+        </section>
+
+        {% if user_name %}
+        <footer class="footer">
+          <p>© {{ current_year }} AI Career Navigator. Built with Flask.</p>
+        </footer>
+        {% endif %}
+      </main>
+    </div>
+  </body>
+</html>

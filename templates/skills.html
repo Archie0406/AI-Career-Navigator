@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+{% block title %}Skill Recommendations | AI Career Navigator{% endblock %}
+{% block page_title %}Skill Recommendations{% endblock %}
+
+{% block content %}
+<div class="page">
+  <header class="page__header">
+    <div>
+      <h1>Skill Recommendations</h1>
+      <p class="muted">Discover the skills you need to master for your target career. Based on ML prediction and dataset analysis.</p>
+    </div>
+    <nav class="breadcrumbs">
+      <a href="{{ url_for('dashboard') }}" class="breadcrumbs__link">Dashboard</a>
+      <span class="breadcrumbs__separator">/</span>
+      <span class="breadcrumbs__current">Skill Analysis</span>
+    </nav>
+  </header>
+
+  <section class="grid grid--2 gap-lg">
+    <form class="card form" method="POST" action="{{ url_for('skills') }}">
+      <div class="form__section">
+        <h2 class="form__title">Your Profile</h2>
+        
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+          <strong>⚠️ Error:</strong> {{ error }}
+        </div>
+        {% endif %}
+        
+        <div class="form__row">
+          <label class="form__label" for="skills">Key skills (comma separated) *</label>
+          <input class="form__input" type="text" id="skills" name="skills" placeholder="e.g. Python, SQL, data viz" value="{{ form.skills }}" required>
+          <small class="text-muted">e.g., Python, SQL, Excel, Tableau</small>
+        </div>
+        <div class="form__row">
+          <label class="form__label" for="interests">Interests or focus areas *</label>
+          <input class="form__input" type="text" id="interests" name="interests" placeholder="e.g. machine learning, BI" value="{{ form.interests }}" required>
+          <small class="text-muted">e.g., data science, machine learning, analytics</small>
+        </div>
+        <div class="form__row">
+          <label class="form__label" for="education">Highest education *</label>
+          <select class="form__select" id="education" name="education" required>
+            <option value="" disabled {% if not form.education %}selected{% endif %}>Select education level</option>
+            <option value="12th Pass" {% if form.education == '12th Pass' %}selected{% endif %}>12th Pass</option>
+            <option value="Diploma" {% if form.education == 'Diploma' %}selected{% endif %}>Diploma</option>
+            <option value="Bachelor's Degree" {% if form.education == "Bachelor's Degree" %}selected{% endif %}>Bachelor's Degree</option>
+            <option value="Master's Degree" {% if form.education == "Master's Degree" %}selected{% endif %}>Master's Degree</option>
+            <option value="PhD" {% if form.education == 'PhD' %}selected{% endif %}>PhD</option>
+          </select>
+        </div>
+        <div class="form__row">
+          <label class="form__label" for="experience">Years of experience *</label>
+          <select class="form__select" id="experience" name="experience" required>
+            <option value="" disabled {% if not form.experience %}selected{% endif %}>Select years of experience</option>
+            {% for yr in range(0, 11) %}
+            <option value="{{ yr }}" {% if form.experience == yr|string %}selected{% endif %}>{{ yr }} {{ "year" if yr == 1 else "years" }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form__actions">
+          <button class="btn btn-primary" type="submit">Analyze Skills</button>
+          <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Back to dashboard</a>
+        </div>
+      </div>
+    </form>
+
+    <aside class="card card--subtle">
+      <div class="card__header">
+        <h2>Skill Recommendations</h2>
+        <span class="badge badge-soft">{{ "Career Match" if recommendation else "Waiting for input" }}</span>
+      </div>
+      <div class="card__content">
+        {% if recommendation is not none %}
+        
+        <!-- Career Match -->
+        <div style="padding-bottom: 1.5rem; border-bottom: 1px solid #eee;">
+          <h3 style="margin: 0 0 0.5rem 0;">Predicted Career</h3>
+          <p style="font-size: 1.3em; margin: 0.5rem 0;">
+            <strong>{{ recommendation.career }}</strong>
+            <span style="color: #666; font-size: 0.8em;">
+              (Model Confidence: {{ (recommendation.score * 100) | round(1) }}%)
+            </span>
+          </p>
+          <p style="color: #666; margin: 0.5rem 0;">
+            Dataset Salary Range: <strong>{{ recommendation.salary_min | currency }} - {{ recommendation.salary_max | currency }}</strong>
+          </p>
+        </div>
+
+        <!-- Skill Matching -->
+        {% if recommendation.matching_skills or recommendation.missing_skills %}
+        <div style="padding: 1.5rem 0;">
+          <h3 style="margin-bottom: 1rem;">🎯 Skill Analysis</h3>
+          
+          {% if recommendation.matching_skills %}
+          <div style="margin-bottom: 1.5rem;">
+            <h5 style="margin: 0 0 0.5rem 0; color: #28a745;">✓ Your Matching Skills</h5>
+            <p class="muted" style="margin-bottom: 0.5rem;">These skills are valuable for <strong>{{ recommendation.career }}</strong>:</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+              {% for skill in recommendation.matching_skills %}
+              <span class="badge bg-success">{{ skill }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+          
+          {% if recommendation.missing_skills %}
+          <div>
+            <h5 style="margin: 0 0 0.5rem 0; color: #ffc107;">⚡ Skills to Learn</h5>
+            <p class="muted" style="margin-bottom: 0.5rem;">These common skills for <strong>{{ recommendation.career }}</strong> would strengthen your profile:</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+              {% for skill in recommendation.missing_skills %}
+              <span class="badge bg-warning" style="color: #000;">{{ skill }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          {% if recommendation.matching_interests %}
+          <div style="margin-top: 1.5rem;">
+            <h5 style="margin: 0 0 0.5rem 0; color: #0d6efd;">💡 Your Matching Interests</h5>
+            <p class="muted" style="margin-bottom: 0.5rem;">Also common among <strong>{{ recommendation.career }}</strong> profiles:</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+              {% for interest in recommendation.matching_interests %}
+              <span class="badge bg-info" style="color: #000;">{{ interest }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- Learning Milestones -->
+        <div class="card card--subtle" style="margin-top: 1.5rem;">
+          <div class="card__header">
+            <h4>📚 Learning Milestones</h4>
+          </div>
+          <div class="card__content">
+            <p class="muted">A clear progression helps you stay focused. Follow these steps:</p>
+            <div class="timeline-preview">
+              <div class="timeline-item">
+                <p class="timeline-item__title">1. Master fundamentals</p>
+                <p class="muted">Build your base with core concepts in your field.</p>
+              </div>
+              <div class="timeline-item">
+                <p class="timeline-item__title">2. Practice with projects</p>
+                <p class="muted">Apply your knowledge through hands-on project work.</p>
+              </div>
+              <div class="timeline-item">
+                <p class="timeline-item__title">3. Specialize & scale</p>
+                <p class="muted">Deepen expertise in your target area and mentor others.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Important Notes -->
+        <div class="alert alert-info" style="margin-top: 1.5rem;">
+          <strong>📋 How Skills Are Determined:</strong>
+          <ul style="margin: 0.5rem 0 0 0; padding-left: 1.5rem;">
+            <li><strong>Matching Skills:</strong> Your skills that appear in <strong>{{ recommendation.career }}</strong> career data</li>
+            <li><strong>Recommended Skills:</strong> Common skills in the training dataset for this career that you don't have</li>
+            <li><strong>Dataset-Based:</strong> Recommendations come from analyzing historical career data, not from the ML model</li>
+          </ul>
+        </div>
+
+        <div class="cta">
+          <p class="muted">Ready to see a detailed career progression plan?</p>
+          <a class="btn btn-primary" href="{{ url_for('timeline') }}">View career roadmap</a>
+          <a class="btn btn-outline-primary" href="{{ url_for('predict') }}" style="margin-left: 0.5rem;">Try What-If Analysis</a>
+        </div>
+
+        {% else %}
+        <div style="text-align: center; padding: 2rem 0;">
+          <p class="muted">👈 Fill out your profile to see personalized skill recommendations.</p>
+          <p class="muted" style="font-size: 0.9em; color: #999;">Based on career data analysis and ML prediction.</p>
+        </div>
+        {% endif %}
+      </div>
+    </aside>
+  </section>
+
+  <section class="card" style="margin-top: 2rem;">
+    <div class="card__header">
+      <h2>How to use this analysis</h2>
+      <span class="badge badge-soft">Quick guide</span>
+    </div>
+    <div class="card__content">
+      <ol class="guide">
+        <li><strong>Fill out your profile</strong> with current skills, interests, education, and experience.</li>
+        <li><strong>Review the analysis</strong> to see which skills match your target career and which you should learn.</li>
+        <li><strong>Pick 1-2 priority skills</strong> and set a learning goal for the next 3-6 months.</li>
+        <li><strong>Use the career roadmap</strong> to track your progression toward the target role.</li>
+      </ol>
+    </div>
+  </section>
+</div>
+
+<style>
+  .alert {
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  .alert-danger {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+  }
+  .alert-info {
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+  }
+  .badge {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+  }
+  .bg-success {
+    background-color: #28a745;
+    color: white;
+  }
+  .bg-warning {
+    background-color: #ffc107;
+  }
+  .text-muted {
+    color: #666;
+    font-size: 0.9em;
+  }
+  .timeline-preview {
+    display: grid;
+    gap: 1rem;
+  }
+  .timeline-item {
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-left: 4px solid #007bff;
+    border-radius: 2px;
+  }
+  .timeline-item__title {
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+  }
+  .guide {
+    padding-left: 1.5rem;
+  }
+  .guide li {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+</style>
+{% endblock %}

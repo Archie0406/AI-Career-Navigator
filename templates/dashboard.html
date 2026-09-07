@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | AI Career Navigator{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+  <header class="dashboard__header">
+    <div class="dashboard__intro">
+      <h1>Welcome back, {{ user_name }}!</h1>
+      <p class="muted">Explore career insights, track progress, and see AI-powered recommendations.</p>
+
+      {% if recent and recent[0] %}
+      <div class="dashboard__highlight">
+        <span class="badge badge-soft">Last prediction</span>
+        <p class="muted" style="margin: 0.5rem 0 0;">
+          <strong>{{ recent[0].career }}</strong> - {{ (recent[0].score * 100) | round(0) }}% confidence
+          <br />
+          <small class="muted">{{ recent[0].timestamp | replace('T', ' ') | replace('Z', '') }}</small>
+        </p>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="dashboard__actions">
+      <a href="{{ url_for('predict') }}" class="btn btn-primary">Get a prediction</a>
+      <a href="{{ url_for('timeline') }}" class="btn btn-secondary">View roadmap</a>
+    </div>
+  </header>
+
+  <section class="grid grid--3 gap-lg">
+    <div class="card">
+      <div class="card__header">
+        <h2>Quick Snapshot</h2>
+        <span class="badge badge-soft">Dataset insights</span>
+      </div>
+      <div class="card__content">
+        <div class="stat">
+          <span class="stat__value">{{ stats.total }}</span>
+          <span class="stat__label">Total job profiles</span>
+        </div>
+        <div class="stat">
+          <span class="stat__value">{{ stats.unique_careers }}</span>
+          <span class="stat__label">Career categories</span>
+        </div>
+        <div class="stat">
+          <span class="stat__value">{{ stats.min_salary | currency }} - {{ stats.max_salary | currency }}</span>
+          <span class="stat__label">Salary range</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__header">
+        <h2>Recent Predictions</h2>
+        <a class="link" href="{{ url_for('predict') }}">Run a new one</a>
+      </div>
+      <div class="card__content">
+        {% if recent %}
+        <ul class="list">
+          {% for item in recent %}
+          <li class="list__item">
+            <div class="recent-item">
+              <div class="recent-item__meta">
+                <strong>{{ item.career }}</strong>
+                <span class="badge badge-soft">{{ (item.score * 100) | round(0) }}% confidence</span>
+              </div>
+              <small class="muted">{{ item.timestamp | replace('T', ' ') | replace('Z', '') }}</small>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p class="muted">No predictions yet — start by running one from the Predict page.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__header">
+        <h2>Roadmap Snapshot</h2>
+        <a class="link" href="{{ url_for('timeline') }}">Open timeline</a>
+      </div>
+      <div class="card__content">
+        <p class="muted">Track progress and milestones to stay on the right path.</p>
+        <div class="timeline-preview">
+          <div class="timeline-item">
+            <p class="timeline-item__title">Assess your skills</p>
+            <p class="muted">Identify where you are today.</p>
+          </div>
+          <div class="timeline-item">
+            <p class="timeline-item__title">Learn key skills</p>
+            <p class="muted">Follow curated learning goals.</p>
+          </div>
+          <div class="timeline-item">
+            <p class="timeline-item__title">Build projects</p>
+            <p class="muted">Gain real-world experience.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card mt-4">
+    <div class="card__header">
+      <h2>Explore the Data (EDA)</h2>
+      <span class="badge badge-soft">EDA</span>
+    </div>
+    <div class="card__content">
+      <p class="muted">
+        A quick look at the training dataset before any modeling: how balanced the career
+        classes are, which skills/interests show up most often, and how education and
+        experience are distributed. Regenerate these anytime with <code>python -m model.eda</code>.
+      </p>
+      <div class="grid grid--2 gap-lg">
+        <div>
+          <img
+            src="{{ url_for('static', filename='eda_career_distribution.png') }}"
+            alt="Career category distribution chart"
+            class="img-fluid"
+            style="width: 100%; border-radius: 0.75rem; border: 1px solid rgba(148,163,184,0.25);"
+            onerror="this.style.display='none'; document.getElementById('eda-fallback-1').style.display='block';"
+          />
+          <p id="eda-fallback-1" class="muted" style="display:none; font-size: 0.9rem;">
+            Chart not found. Run <code>python -m model.eda</code> to generate it.
+          </p>
+        </div>
+        <div>
+          <img
+            src="{{ url_for('static', filename='eda_top_skills.png') }}"
+            alt="Top skills frequency chart"
+            class="img-fluid"
+            style="width: 100%; border-radius: 0.75rem; border: 1px solid rgba(148,163,184,0.25);"
+            onerror="this.style.display='none'; document.getElementById('eda-fallback-2').style.display='block';"
+          />
+          <p id="eda-fallback-2" class="muted" style="display:none; font-size: 0.9rem;">
+            Chart not found. Run <code>python -m model.eda</code> to generate it.
+          </p>
+        </div>
+        <div>
+          <img
+            src="{{ url_for('static', filename='eda_top_interests.png') }}"
+            alt="Top interests frequency chart"
+            class="img-fluid"
+            style="width: 100%; border-radius: 0.75rem; border: 1px solid rgba(148,163,184,0.25);"
+            onerror="this.style.display='none'; document.getElementById('eda-fallback-3').style.display='block';"
+          />
+          <p id="eda-fallback-3" class="muted" style="display:none; font-size: 0.9rem;">
+            Chart not found. Run <code>python -m model.eda</code> to generate it.
+          </p>
+        </div>
+        <div>
+          <img
+            src="{{ url_for('static', filename='eda_education_distribution.png') }}"
+            alt="Education level distribution chart"
+            class="img-fluid"
+            style="width: 100%; border-radius: 0.75rem; border: 1px solid rgba(148,163,184,0.25);"
+            onerror="this.style.display='none'; document.getElementById('eda-fallback-4').style.display='block';"
+          />
+          <p id="eda-fallback-4" class="muted" style="display:none; font-size: 0.9rem;">
+            Chart not found. Run <code>python -m model.eda</code> to generate it.
+          </p>
+        </div>
+        <div>
+          <img
+            src="{{ url_for('static', filename='eda_experience_distribution.png') }}"
+            alt="Experience distribution histogram"
+            class="img-fluid"
+            style="width: 100%; border-radius: 0.75rem; border: 1px solid rgba(148,163,184,0.25);"
+            onerror="this.style.display='none'; document.getElementById('eda-fallback-5').style.display='block';"
+          />
+          <p id="eda-fallback-5" class="muted" style="display:none; font-size: 0.9rem;">
+            Chart not found. Run <code>python -m model.eda</code> to generate it.
+          </p>
+        </div>
+        <div>
+          <img
+            src="{{ url_for('static', filename='eda_salary_by_career.png') }}"
+            alt="Salary spread by career box plot"
+            class="img-fluid"
+            style="width: 100%; border-radius: 0.75rem; border: 1px solid rgba(148,163,184,0.25);"
+            onerror="this.style.display='none'; document.getElementById('eda-fallback-6').style.display='block';"
+          />
+          <p id="eda-fallback-6" class="muted" style="display:none; font-size: 0.9rem;">
+            Chart not found. Run <code>python -m model.eda</code> to generate it.
+          </p>
+        </div>
+        <div>
+          <img
+            src="{{ url_for('static', filename='eda_experience_by_career.png') }}"
+            alt="Average years of experience by career"
+            class="img-fluid"
+            style="width: 100%; border-radius: 0.75rem; border: 1px solid rgba(148,163,184,0.25);"
+            onerror="this.style.display='none'; document.getElementById('eda-fallback-8').style.display='block';"
+          />
+          <p id="eda-fallback-8" class="muted" style="display:none; font-size: 0.9rem;">
+            Chart not found. Run <code>python -m model.eda</code> to generate it.
+          </p>
+        </div>
+      </div>
+      <div class="mt-3">
+        <img
+          src="{{ url_for('static', filename='eda_skills_by_career.png') }}"
+          alt="Top 5 skills by career, one chart per career"
+          class="img-fluid"
+          style="width: 100%; border-radius: 0.75rem; border: 1px solid rgba(148,163,184,0.25);"
+          onerror="this.style.display='none'; document.getElementById('eda-fallback-7').style.display='block';"
+        />
+        <p id="eda-fallback-7" class="muted" style="display:none; font-size: 0.9rem;">
+          Chart not found. Run <code>python -m model.eda</code> to generate it.
+        </p>
+        <p class="muted mt-2" style="font-size: 0.9rem;">
+          This chart is the key one for explaining why the model performs so well:
+          each career's top 5 skills barely overlap with any other career's, which makes
+          the classes easy to separate. See "Why is accuracy so high?" on the
+          <a href="{{ url_for('evaluate') }}">Model Evaluation</a> page.
+        </p>
+      </div>
+      <div class="mt-3">
+        <img
+          src="{{ url_for('static', filename='eda_interests_by_career.png') }}"
+          alt="Top 5 interests by career, one chart per career"
+          class="img-fluid"
+          style="width: 100%; border-radius: 0.75rem; border: 1px solid rgba(148,163,184,0.25);"
+          onerror="this.style.display='none'; document.getElementById('eda-fallback-9').style.display='block';"
+        />
+        <p id="eda-fallback-9" class="muted" style="display:none; font-size: 0.9rem;">
+          Chart not found. Run <code>python -m model.eda</code> to generate it.
+        </p>
+      </div>
+      <p class="mt-3">
+        <a class="link" href="{{ url_for('evaluate') }}">See full model evaluation (confusion matrix, learning curve, feature importance) →</a>
+      </p>
+    </div>
+  </section>
+</div>
+{% endblock %}
